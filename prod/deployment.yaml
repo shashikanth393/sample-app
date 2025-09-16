@@ -12,8 +12,9 @@ spec:
       labels:
         app: production-app
     spec:
-      containers:
-      - name: production-container
-        image: <todo>
-        ports:
-        - containerPort: 8080
+       containers:
+       - name: hello-cloudbuild
+       image: us-west1-docker.pkg.dev/qwiklabs-gcp-03-9045b764c192/my-repository/hello-cloudbuild:v1.0
+       ports:
+       - containerPort: 8080
+
