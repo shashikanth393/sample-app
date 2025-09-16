@@ -1,33 +1,18 @@
 steps:
-  # Step 1: Compile the Go Application
   - name: 'gcr.io/cloud-builders/go'
-    id: 'Compile application'
     env: ['GOPATH=/gopath']
     args: ['build', '-o', 'main', 'main.go']
 
-  # Step 2: Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
-    id: 'Build Docker image'
-    args: [
-      'build', '-t',
-      'us-west1-docker.pkg.dev/qwiklabs-gcp-03-9045b764c192/my-repository/hello-cloudbuild:v1.0',
-      '.'
-    ]
+    args: ['build', '-t', 'us-west1-docker.pkg.dev/$PROJECT_ID/my-repository/hello-cloudbuild:v2.0', '.']
 
-  # Step 3: Push the Docker image
   - name: 'gcr.io/cloud-builders/docker'
-    id: 'Push Docker image'
-    args: [
-      'push',
-      'us-west1-docker.pkg.dev/qwiklabs-gcp-03-9045b764c192/my-repository/hello-cloudbuild:v1.0'
-    ]
+    args: ['push', 'us-west1-docker.pkg.dev/$PROJECT_ID/my-repository/hello-cloudbuild:v2.0']
 
-  # Step 4: Deploy to GKE (prod namespace)
   - name: 'gcr.io/cloud-builders/kubectl'
-    id: 'Deploy'
     args: ['-n', 'prod', 'apply', '-f', 'prod/deployment.yaml']
     env:
-      - 'CLOUDSDK_COMPUTE_ZONE=us-west1-a'
+      - 'CLOUDSDK_COMPUTE_REGION=us-west1-a'
       - 'CLOUDSDK_CONTAINER_CLUSTER=hello-cluster'
 
 options:
